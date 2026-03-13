@@ -87,7 +87,7 @@ export class Environment {
 
         // Terrain color: Reddish rocky terrain (Utah Sandstone / Granite mix)
         const material = new THREE.MeshStandardMaterial({
-            color: 0xb57a5c,
+            color: 0x9b3a1f,
             roughness: 0.9,
             metalness: 0.05
         });
