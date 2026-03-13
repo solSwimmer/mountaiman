@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Mountain Man - Winter Wilderness</title>
+		<style>
+			body {
+				margin: 0;
+				background-color: #000;
+				color: #fff;
+				font-family: 'Inter', sans-serif;
+				overflow: hidden;
+			}
+			#ui-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				transition: opacity 0.5s ease;
+			}
+			#crosshair {
+				width: 10px;
+				height: 10px;
+				border: 1px solid rgba(255, 255, 255, 0.5);
+				border-radius: 50%;
+			}
+			#instructions {
+				position: absolute;
+				bottom: 20px;
+				background: rgba(0, 0, 0, 0.5);
+				padding: 10px 20px;
+				border-radius: 8px;
+				backdrop-filter: blur(5px);
+				pointer-events: auto;
+				cursor: pointer;
+				text-align: center;
+			}
+			#instructions h1 {
+				margin: 0 0 10px 0;
+				font-size: 1.5rem;
+				letter-spacing: 2px;
+				text-transform: uppercase;
+			}
+			#instructions p {
+				margin: 5px 0;
+				font-size: 0.9rem;
+				opacity: 0.8;
+			}
+			#hud {
+				position: absolute;
+				bottom: 20px;
+				left: 50%;
+				transform: translateX(-50%);
+				display: flex;
+				gap: 20px;
+				pointer-events: auto;
+			}
+			.hud-btn {
+				background: rgba(0, 0, 0, 0.6);
+				border: 1px solid rgba(255, 255, 255, 0.3);
+				color: white;
+				padding: 10px 20px;
+				border-radius: 8px;
+				cursor: pointer;
+				font-size: 1rem;
+				backdrop-filter: blur(5px);
+				transition: all 0.2s;
+			}
+			.hud-btn:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+			.active-item {
+				border-color: #ffaa88;
+				box-shadow: 0 0 10px rgba(255, 170, 136, 0.5);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="ui-overlay">
+			<div id="crosshair"></div>
+			<div id="instructions">
+				<h1>Mountain Man</h1>
+				<p>Click to start your journey</p>
+				<p>(WASD to walk, SPACE to jump, 1-3 to switch items)</p>
+				<p>(Left Click to Use Item. Look at water to drink)</p>
+			</div>
+			<div id="top-hud" style="position: absolute; top: 20px; left: 20px; pointer-events: none; font-size: 1.2rem; text-shadow: 1px 1px 2px black;">
+				<div id="wood-counter">Wood: 0/10</div>
+				<div id="food-counter" style="margin-top: 5px;">Food: 0</div>
+				<div id="water-counter" style="margin-top: 5px; color: #44aaff;">Water: 100%</div>
+				<div id="build-hint" style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">(Press B to build Cabin)</div>
+			</div>
+			<div id="hud" style="display: none;">
+				<div id="btn-axe" class="hud-btn active-item">Axe (1)</div>
+				<div id="btn-trap" class="hud-btn">Trap (2)</div>
+				<div id="btn-gun" class="hud-btn">Gun (3)</div>
+				<div id="btn-jump" class="hud-btn">Jump (Space)</div>
+			</div>
+		</div>
+		<script type="module" src="/main.js"></script>
+	</body>
+</html>
