@@ -18,7 +18,6 @@ export class Environment {
         this.createSky();
         this.createTerrain();
         this.createWater();
-        this.createSnow();
         this.createLighting();
         this.createTrees();
         this.spawnAnimals();
@@ -52,8 +51,8 @@ export class Environment {
             }
         `;
         const uniforms = {
-            topColor: { value: new THREE.Color(0x112244) }, // Twilight blue
-            bottomColor: { value: new THREE.Color(0xff5522) }, // Vibrant Utah Sunset
+            topColor: { value: new THREE.Color(0x3388cc) }, // Bright daytime blue
+            bottomColor: { value: new THREE.Color(0xffd090) }, // Warm golden horizon
             offset: { value: 33 },
             exponent: { value: 0.6 }
         };
@@ -69,7 +68,7 @@ export class Environment {
         const sky = new THREE.Mesh(skyGeo, skyMat);
         this.scene.add(sky);
         
-        this.scene.fog = new THREE.FogExp2(0xff6633, 0.0003); // Lighter fog for expansive views
+        this.scene.fog = new THREE.FogExp2(0xaaddff, 0.0002); // Light blue daytime fog
     }
 
     createTerrain() {
@@ -113,38 +112,11 @@ export class Environment {
         this.scene.add(this.water);
     }
 
-    createSnow() {
-        const particles = 15000;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particles * 3);
-        const velocities = new Float32Array(particles);
-
-        for (let i = 0; i < particles * 3; i += 3) {
-            positions[i] = (Math.random() - 0.5) * 200;
-            positions[i + 1] = Math.random() * 100;
-            positions[i + 2] = (Math.random() - 0.5) * 200;
-            velocities[i/3] = 0.1 + Math.random() * 0.2;
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-        const material = new THREE.PointsMaterial({
-            color: 0xffffff,
-            size: 0.1,
-            transparent: true,
-            opacity: 0.6
-        });
-
-        this.snowPoints = new THREE.Points(geometry, material);
-        this.scene.add(this.snowPoints);
-        this.snowVelocities = velocities;
-    }
-
     createLighting() {
-        const ambientLight = new THREE.AmbientLight(0x5a4a40, 0.5); // Warmer desert ambient
+        const ambientLight = new THREE.AmbientLight(0xfff5e0, 1.2); // Bright warm daylight ambient
         this.scene.add(ambientLight);
 
-        const sunLight = new THREE.DirectionalLight(0xff8855, 1.8); // Intense Utah sun
+        const sunLight = new THREE.DirectionalLight(0xfff8e7, 2.5); // Bright midday sun
         sunLight.position.set(-100, 50, -100);
         sunLight.castShadow = true;
         
@@ -166,26 +138,6 @@ export class Environment {
         // Flickering effect for campfire
         if (this.fireLight) {
             this.fireLight.intensity = 2 + Math.random() * 2;
-        }
-
-        // Move snow relative to player to keep it centered
-        if (this.snowPoints) {
-            const positions = this.snowPoints.geometry.attributes.position.array;
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i+1] -= this.snowVelocities[i/3];
-                
-                // Wrap around logic
-                if (positions[i+1] < 0) positions[i+1] = 100;
-                
-                // Keep snow centered around player
-                if (Math.abs(positions[i] - playerPosition.x) > 100) {
-                    positions[i] = playerPosition.x + (Math.random() - 0.5) * 200;
-                }
-                if (Math.abs(positions[i+2] - playerPosition.z) > 100) {
-                    positions[i+2] = playerPosition.z + (Math.random() - 0.5) * 200;
-                }
-            }
-            this.snowPoints.geometry.attributes.position.needsUpdate = true;
         }
 
         // Update Animals
