@@ -15,14 +15,14 @@ export class Environment {
         this.animals = [];
         this.wells = [];
         
+        this.waterLevel = 4;
+
         this.createSky();
         this.createTerrain();
         this.createWater();
         this.createLighting();
         this.createTrees();
         this.spawnAnimals();
-        
-        this.waterLevel = 4;
         
         // Starting items (ensure not underwater by checking height near spawn at x=0, z=15)
         this.addCampfire(0, this.getHeightAt(0, 15), 15);
